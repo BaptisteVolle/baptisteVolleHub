@@ -1,0 +1,18 @@
+.cat-title {
+    padding: 1.5rem;
+    font-size: 28px;
+    margin: auto;
+    color: #071A3D;
+    margin:  0.5rem;
+}
+
+.projects {
+    
+    display: grid;
+    column-gap: 14px;
+    row-gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 400px));
+    margin-top: 50px;
+    justify-content: space-around;
+      
+}

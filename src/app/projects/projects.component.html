@@ -1,0 +1,25 @@
+
+
+<p class="cat-title "> My Projects !
+</p>
+<mat-divider></mat-divider>
+<!-- projects.component.html -->
+
+<section class="projects">
+  <div *ngFor="let project of filteredProjectsList">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>{{ project.name }}</mat-card-title>
+
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        {{ project.description }}
+
+        <h3><a [routerLink]="['/', project.url]"> {{ project.name }}</a>  </h3>
+    
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

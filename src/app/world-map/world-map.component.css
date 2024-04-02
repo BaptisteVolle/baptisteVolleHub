@@ -1,0 +1,45 @@
+
+
+.container {
+  display: flex;
+}
+
+.world-map-container {
+  flex: 1; /* Div prendra le reste de l'espace disponible */
+  background-color: #7EC3D6;
+}
+
+.country-info {
+  width: 400px; /* Largeur minimale pour les informations du pays */
+}
+
+.item-country-info {
+  font-weight: 600;
+}
+
+.list-buttons-display {
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.list-buttons-map {
+  display: table-cell;
+}
+
+.btn-toggle-display {
+  color: black;
+  border: 1px solid black;
+  background-color: white;
+  padding: 0.4rem;
+  margin: 0.4rem; 
+}
+
+.btn-toggle-display:hover {
+  cursor:pointer;
+  background-color: #DCDCDCDC;
+}
+
+.form-country-info {
+  margin-top: 10px;
+}
+  
