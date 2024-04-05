@@ -1,81 +1,55 @@
 <div class="container">
-
-  <div class="world-map-container"></div>
-
-  <div class="country-info">
-    <mat-card>
-      <mat-card-content>
-
-        <div class="list-buttons-map">
-          <button class="btn-toggle-display" (click)="displayColorByAttribute('population')">
-            Population
-          </button>
-
-          <button  class="btn-toggle-display" (click)="displayColorByAttribute('density')">
-            Density
-          </button>
-          <button class="btn-toggle-display"  (click)="displayColorByAttribute('area')">
-           Area
-          </button>
-          <button  class="btn-toggle-display" (click)="displayColorByAttribute('flag')">
-            Flag
-          </button>
-          <button  class="btn-toggle-display" (click)="displayColorByAttribute('continents')">
-            Continent
-          </button>
-
-        </div>
-
-        <mat-divider></mat-divider>
-        <form class="form-country-info">
-          <mat-form-field>
-            <mat-label>Select a country</mat-label>
-            <input #input
-                   type="text"
-                   placeholder="Pick one"
-                   matInput
-                   [formControl]="countryControl"
-                   [matAutocomplete]="auto"
-                   
-                   (input)="filter()"
-                   (focus)="filter()">
-            <mat-autocomplete requireSelection #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
-              @for (option of filteredOptions; track option) {
-                <mat-option [value]="option">{{option}}</mat-option>
-              }
-            </mat-autocomplete>
-          </mat-form-field>
-          <button mat-icon-button color="primary" (click)="clearSelection()">
-            <mat-icon>close</mat-icon>
-          </button>
-        </form>
-       
-      
-        <mat-list>
-          <mat-list-item class="item-country-info"><mat-icon matListItemIcon>folder</mat-icon> Name :  {{ countryInfo?.name['common'] }} </mat-list-item>
-          <mat-list-item  class="item-country-info"><mat-icon matListItemIcon>castle</mat-icon> Capitale: {{ countryInfo?.capital }}</mat-list-item>
-            
-            <mat-list-item class="item-country-info"><mat-icon matListItemIcon>people</mat-icon> Population: {{ countryInfo?.population.toLocaleString()  }} </mat-list-item>
-            <mat-list-item  class="item-country-info"><mat-icon matListItemIcon>blur_circular</mat-icon> Area: {{ countryInfo?.area.toLocaleString() }} km²</mat-list-item>
-            <mat-list-item  class="item-country-info"><mat-icon matListItemIcon>blur_circular</mat-icon> Density : {{ (countryInfo?.population/ countryInfo?.area).toLocaleString() }} h/km²</mat-list-item>
-            <mat-list-item  class="item-country-info"><mat-icon matListItemIcon>language</mat-icon> Language: {{ countryInfo?.language}}</mat-list-item>
-    
-            <mat-list-item  class="item-country-info"><mat-icon matListItemIcon>currency_exchange</mat-icon> Currency: {{ countryInfo?.currency['name'] }} {{ countryInfo?.currency['symbol'] }}</mat-list-item>
-            <!-- Ajoutez d'autres informations du pays selon vos besoins -->
-            <img style="margin: 1rem; padding: 0.5rem;" src="{{ countryInfo?.flags['png']}}">
-          
-        </mat-list>
-    
-      </mat-card-content>
-    </mat-card>
+  <div class="world-map-container"> 
   </div>
 
-</div>
+  <div class="country-info">
+    <h2 class="country-info-title"> Color display </h2>
+    <mat-divider ></mat-divider>
 
-
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-tile> <button mat-flat-button [ngClass]="currentAttribute == 'population' ? 'selected' : '' " class="btn-toggle-display" (click)="displayColorByAttribute('population')">Population </button></mat-grid-tile>
+      <mat-grid-tile> <button mat-flat-button [ngClass]="currentAttribute == 'area' ? 'selected' : '' " class="btn-toggle-display" (click)="displayColorByAttribute('area')">Area</button></mat-grid-tile>
+      <mat-grid-tile> <button mat-flat-button [ngClass]="currentAttribute == 'density' ? 'selected' : '' " class="btn-toggle-display" (click)="displayColorByAttribute('density')">Density</button></mat-grid-tile>
+      <mat-grid-tile> <button mat-flat-button [ngClass]="currentAttribute == 'continents' ? 'selected' : '' " class="btn-toggle-display" (click)="displayColorByAttribute('continents');">continents</button></mat-grid-tile>
+    </mat-grid-list>
 
 
     
-
-
-   
+    <h2 style ="margin-top: 1rem;" class="country-info-title"> Country information </h2>
+    <mat-divider ></mat-divider>
+    
+    <form class="form-country-info">
+      <mat-form-field>
+        <mat-label>Select a country</mat-label>
+        <input #input
+                type="text"
+                placeholder="Pick one"
+                matInput
+                [formControl]="countryControl"
+                [matAutocomplete]="auto"
+                
+                (input)="filter()"
+                (focus)="filter()" >
+        <mat-autocomplete requireSelection #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+          @for (option of filteredOptions; track option) {
+            <mat-option [value]="option">{{option}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      <button mat-icon-button color="primary" (click)="clearSelection()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </form>
+    
+  
+    <mat-list style = "margin-top: -15px;" *ngIf="countryInfo">
+      <mat-list-item class="item-country-info"> <b> Name </b> :  {{ countryInfo?.name['common'] }} </mat-list-item>
+      <mat-list-item  class="item-country-info"> <b> Capitale </b> : {{ countryInfo?.capital }}</mat-list-item>
+      <mat-list-item class="item-country-info"><b>Population  </b> : {{ countryInfo?.population.toLocaleString()  }} </mat-list-item>
+      <mat-list-item  class="item-country-info"> <b> Area </b>: {{ countryInfo?.area.toLocaleString() }} km²</mat-list-item>
+      <mat-list-item  class="item-country-info"> <b>Density  </b> : {{ (countryInfo?.population/ countryInfo?.area).toLocaleString() }} h/km²</mat-list-item>
+      <mat-list-item  class="item-country-info"> <b> Currency</b> :  {{ countryInfo?.currency['symbol'] }}</mat-list-item>
+      <div>  <img style="border: 1px solid black; width: 35%; height: 35%;" src="{{ countryInfo?.flags['png']}}"> </div>
+    </mat-list>
+  </div>
+</div>

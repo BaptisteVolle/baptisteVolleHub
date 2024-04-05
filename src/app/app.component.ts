@@ -22,7 +22,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     </a>
       
     </mat-toolbar>
-    <section class="content">
+    <section class="content" style='height:100%'>
       <router-outlet></router-outlet>
     </section>
   </main>

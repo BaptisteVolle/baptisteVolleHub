@@ -10,9 +10,12 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
 import * as d3 from 'd3';
+import * as fs from 'fs';
 import { CommonModule } from '@angular/common';
 import { FormControl } from '@angular/forms';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-world-map',
@@ -30,7 +33,8 @@ import { FormControl } from '@angular/forms';
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatGridListModule,
   ],
   templateUrl: './world-map.component.html',
   styleUrl: './world-map.component.css'
@@ -48,7 +52,12 @@ export class WorldMapComponent implements OnInit {
   countryControl = new FormControl('');
   options: string[] = this.allCountriesNameList;
   filteredOptions: string[];
+  currentAttribute: string;
 
+  
+  ngOnInit(): void {
+    this.drawMap();
+  }
 
   filter(): void {
     const filterValue = this.input.nativeElement.value.toLowerCase();
@@ -68,47 +77,49 @@ export class WorldMapComponent implements OnInit {
     this.showCountryInfo(this.selectedCountryName);
   }
 
-  ngOnInit(): void {
-    this.drawMap();
-  }
 
   drawMap() {
-    // Charger les données GeoJSON
-    //d3.json('assets/world-geo.json').then((worldData: any) => {
-
     if (typeof window !== "undefined") { 
   
       this.http.get('assets/world-geo.json').subscribe((worldData: any) => {
-      
-        const width = window.innerWidth;
-        const height = window.innerHeight ;
+
 
         for (let i = 0; i < worldData.features.length; i++) {
           let currentCountryName = worldData.features[i].properties.name;
           this.allCountriesNameList.push(currentCountryName);
         }
-
-        // Initialiser la projection géographique
     
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        const viewBoxWidth = (screenWidth - 350);
+        const viewBoxHeight = screenHeight;
+
+      
+        const viewBox = `0 0 ${viewBoxWidth} ${viewBoxHeight}`;
+
+        let scale = (screenWidth + screenHeight) / 15;
+        console.log('scale', scale);
+        console.log(screenWidth, screenHeight);
 
         var projection = d3.geoMercator()
-          .scale(70)
-          .center([0,20])
-          .translate([width / 2, height / 2]);
+        .scale(scale)
+        .center([-10, 0]) 
+        .translate([viewBoxWidth / 2, viewBoxHeight / 1.55]);
+
          
         // Créer un chemin pour chaque pays
         const path: d3.GeoPath<any, any> = d3.geoPath().projection(projection);
 
 
-      // Créer une échelle de couleur personnalisée avec une couleur aléatoire pour chaque pays
-        const colorScale = d3.scaleOrdinal()
-        .domain(worldData.features.map((d: any) => d.properties.name)) // Utilisez les noms des pays comme domaine
-        .range(worldData.features.map(() => this.randomColor())); // Utilisez une couleur aléatoire pour chaque pays
-
-        // Créer l'élément SVG et l'ajouter à la page
         const svg = d3.select('.world-map-container').append('svg')
+        .attr('viewBox', viewBox)
+        .attr('preserveAspectRatio', 'xMidYMid meet')
         .attr('width', '100%')
-        .attr('height', height)
+        .attr('height', '100%')
+        .style('display', 'block')
+        .style('margin', 'auto');
+
         
         svg.selectAll('path')
           .data(worldData.features)
@@ -116,19 +127,7 @@ export class WorldMapComponent implements OnInit {
           .append('path')
           .attr('name', function(d: any) {  return d.properties?.name || ''})
           .attr('d', path)
-          .style('fill', (feature: any) => colorScale(feature.properties.name) as string)
-          .style("stroke", '#000000')
-          
-
-          //Ajouter des fonctionnalités de zoom
-          svg.call(
-            d3.zoom<SVGSVGElement, unknown>()
-              .scaleExtent([1, 10])
-              .on('zoom', (event: any) => {
-                svg.selectAll('path')
-                  .attr('transform', event.transform);
-            })
-          );
+          .attr('stroke','#000000')
 
           const tooltip = this.addTooltip(svg);
           let allCountries = svg.selectAll('path');
@@ -138,16 +137,25 @@ export class WorldMapComponent implements OnInit {
               const bbox = e.target.getBBox()
               const centroid = [bbox.x + bbox.width/2, bbox.y+bbox.height/2]
               tooltip.show(d['properties'].name || '', centroid[0], centroid[1])
-            })
-            .on("mouseleave", () => tooltip.hide())
-            .on("click", (e,d : Object) => {
+
               const target = e.currentTarget;
               let country = d['properties'].name;
               this.countryControl.setValue(d['properties'].name); // Vider le sélecteur en définissant sa valeur sur une chaîne vide
               this.selectCountryOnMap(target);
-              this.showCountryInfo(country) 
-            });       
+              this.showCountryInfo(country);
+            })
+            .on("mouseleave", () =>  {
+              this.emptyCountryInfo();
+              this.unSelectAllCountries();
+              tooltip.hide()
+            });    
+            
+            this.displayColorByAttribute('population');
+            // window.addEventListener('resize', updateViewBox);
+
       });
+
+      
     }
   }
 
@@ -234,6 +242,11 @@ export class WorldMapComponent implements OnInit {
 
   }
 
+  emptyCountryInfo() {
+    this.countryControl.setValue('');
+    this.countryInfo = null;
+  }
+
   toggleSidebar(): boolean{
     if (!this.isShowing){
         return this.isShowing = true;
@@ -257,16 +270,16 @@ export class WorldMapComponent implements OnInit {
 
   selectCountryOnMap(target: any) {
 
-
-    d3.selectAll('.selected-country')
-      .style("stroke", '#000000')
-      .style('stroke-width', '1px')
-      .classed('selected-country',false)
-        
+    this.unSelectAllCountries();    
     d3.select(target)
       .classed('selected-country',true)
       .style("stroke", "#FFA500")
-      .style('stroke-width', '2px');
+  }
+
+  unSelectAllCountries() {
+    d3.selectAll('.selected-country')
+      .classed('selected-country',false)
+      .style("stroke", "#000000")
   }
 
   clearSelection() {
@@ -298,35 +311,30 @@ export class WorldMapComponent implements OnInit {
             currentAttribute = currentAttribute[0];
           }
 
-  
           let selectedElement: any = d3.selectAll(`[name="${country.name.official}"]`);
           if (selectedElement.size() < 1) { 
             selectedElement = d3.selectAll(`[name="${country.name.common}"]`);
-          }        
-    
-          if (attribute == 'flag') {
-            selectedElement.style("fill", "none");
-            selectedElement.style('background-image', `url(${country.flags.png})`);
-            
-          } 
-          else {
-            selectedElement.style("fill", colorScale(currentAttribute));
-          }
+
+          }         
+          selectedElement.style("fill", colorScale(currentAttribute));
          
         });
-    });
-  }
 
+        let svg = d3.select('.world-map-container').select('svg');
+        this.addLegend(svg,colorScale, attribute);
+    });
+
+    this.currentAttribute = attribute;
+  }
 
   createColorScale(attribute: string) {
 
-    let colorScale: any;
+    let colorScale, legend: any;
     switch (attribute) {
       case 'population':
         colorScale = d3.scaleThreshold<number, string>()
           .domain([100000, 1000000, 5000000, 10000000, 30000000, 60000000, 100000000, 500000000])
           .range(d3.schemeBlues[9]);
-          
         break;
 
       case 'area':
@@ -338,7 +346,7 @@ export class WorldMapComponent implements OnInit {
 
       case 'density':
         colorScale = d3.scaleThreshold<number, string>()
-          .domain([5,10, 50, 100, 200, 500, 10000, 20000])
+          .domain([5,10, 20, 50, 100, 200, 500, 1000])
           .range(d3.schemeOranges[9]);
         break;
 
@@ -350,5 +358,86 @@ export class WorldMapComponent implements OnInit {
     }
 
     return colorScale;
+  }
+
+  addLegend(svg: any, colorScale: any, attribute: string) {
+    const legendWidth = 20;
+    const legendHeight = 20;
+    const legendX = 20;
+    const legendY = 30;
+    let unit;
+
+    switch (attribute) {
+      case 'population':
+        unit = 'Population in millions'
+        break;
+      case 'area':
+        unit = 'Countries area in km²'
+        break;
+      case 'density':
+        unit = 'Population / km²'
+        break;
+      case 'continents':
+        unit = 'Continents'
+        break;
+    }
+
+    // Delete alls previous legends
+    d3.selectAll('.legend')
+      .remove();
+
+  
+    const legend = svg.append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${legendX}, ${legendY})`);
+
+    const legendTitle = legend.append('text')
+      .attr('x', 0)
+      .attr('y', -10)
+      .text(`${unit}` )
+      .attr('font-weight', 'bold');
+  
+  
+    const legendItems = legend.selectAll('.legend-item')
+      .data(colorScale.range())
+      .enter().append('g')
+      .attr('class', 'legend-item')
+      .attr('transform', (d, i) => `translate(0, ${i * (legendHeight + 5)})`);
+  
+    legendItems.append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', legendWidth)
+      .attr('height', legendHeight)
+      .style('fill', d => d);
+
+
+    const domain = colorScale.domain();
+  
+    legendItems.append('text')
+      .attr('x', legendWidth + 10)
+      .attr('y', legendHeight / 2)
+      .attr('dy', '0.35em')
+      .text((d, i) => {
+        
+       
+        if (typeof domain[i] == 'number' && domain[i]>= 1000000) {
+          domain[i] = (domain[i]/1000000).toLocaleString() + 'm';
+        }
+
+        if (attribute == 'continents') {
+          return domain[i].toLocaleString();
+        }
+        else {
+          if (i === 0) {
+            return `< ${domain[i].toLocaleString()}`;
+          } else if (i === colorScale.range().length - 1) {
+            return `> ${domain[i - 1].toLocaleString()}`;
+          } else {
+            return `${domain[i - 1].toLocaleString()} - ${domain[i].toLocaleString()}`;
+          }
+        }
+        
+      });
   }
 }
