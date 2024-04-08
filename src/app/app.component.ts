@@ -12,21 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     RouterModule,
     MatToolbarModule,
   ],
-  template: `
-  <main>
-    <mat-toolbar class="main-toolbar">
-    <a [routerLink]="['/']">
-      <header>
-      <span>Baptiste Volle Website</span>
-      </header>
-    </a>
-      
-    </mat-toolbar>
-    <section class="content" style='height:100%'>
-      <router-outlet></router-outlet>
-    </section>
-  </main>
-`,
+  templateUrl:'./app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {

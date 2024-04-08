@@ -1,0 +1,6 @@
+
+<div class="grid">
+  <div *ngFor="let row of grid">
+    <div *ngFor="let cell of row" class="cell" [ngClass]="{ 'alive': cell.alive, 'dead': !cell.alive }" (click)="toggleCellState(cell)"></div>
+  </div>
+</div>

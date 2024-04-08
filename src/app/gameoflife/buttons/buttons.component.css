@@ -1,0 +1,8 @@
+.btn-game {
+    color: #3D5A80 !important;
+    background-color: white !important;
+    border: 1px solid #3D5A80;
+    width:130px;
+    height: 50px;
+    margin: 1rem;
+  }

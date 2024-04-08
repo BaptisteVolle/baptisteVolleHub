@@ -23,6 +23,8 @@
     "@angular/platform-server": "^17.2.0",
     "@angular/router": "^17.2.0",
     "@angular/ssr": "^17.2.3",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "d3": "^7.9.0",
     "d3-color-legend": "^1.4.1",
     "d3-svg-legend": "^2.25.6",

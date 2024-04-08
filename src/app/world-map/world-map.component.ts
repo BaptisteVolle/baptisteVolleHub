@@ -94,13 +94,9 @@ export class WorldMapComponent implements OnInit {
 
         const viewBoxWidth = (screenWidth - 350);
         const viewBoxHeight = screenHeight;
-
-      
         const viewBox = `0 0 ${viewBoxWidth} ${viewBoxHeight}`;
 
         let scale = (screenWidth + screenHeight) / 15;
-        console.log('scale', scale);
-        console.log(screenWidth, screenHeight);
 
         var projection = d3.geoMercator()
         .scale(scale)

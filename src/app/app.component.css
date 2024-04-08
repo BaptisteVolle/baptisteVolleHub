@@ -16,6 +16,8 @@ header {
     background-color: blue;
 } */
 
-.main-toolbar {
-    background-color: #071a3D;
+
+main { 
+    background-color: white!important;
+    height: 100%; 
 }

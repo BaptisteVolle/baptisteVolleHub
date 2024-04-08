@@ -1,0 +1,204 @@
+.puzzle {
+  display: flex;
+  flex-direction: column;
+}
+
+.puzzle-row {
+  display: flex;
+}
+
+.content-container {
+  display: flex;
+}
+
+
+.puzzle-container {
+  flex: 1; /* Take up equal space */
+  margin: 0 40px; /* Add some space between the containers */
+}
+
+.menu-container {
+  flex: 1; /* Take up equal space */
+  margin: 0 20px; /* Add some space between the containers */
+  flex-direction: column;
+}
+
+.menu-container h2 {
+  margin-bottom: 10px; /* Espacement entre le titre du menu et les boutons */
+}
+
+.menu-buttons {
+  flex-direction: column;
+  display: flex;
+  margin-top: 3rem;
+}
+
+.menu-container button {
+  margin-bottom: 5px; /* Espacement entre les boutons */
+}
+
+.btn-change-mode {
+  width: 20px !important;
+  color: black;
+  padding: 0.7rem;
+}
+
+
+.btn-switch-mode {
+  width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.btn-grid {
+  color: #fff;
+  border-color: #fff;
+  background-color: #485160;
+  padding: 1rem;
+  font-size: 18px;
+}
+
+.btn-grid:hover {
+  color: #485160;
+  border-color: #485160;
+  background-color: #fff;
+}
+
+.hearts {
+  display: flex; /* Use flexbox to display items in a row */
+  align-items: center; /* Align items vertically */
+  justify-content: center; /* Align items horizontally */
+  margin-top: 5rem;
+}
+
+.menu-container {
+  display: flex; /* Use flexbox to display items in a row */
+  align-items: center; /* Align items vertically */
+}
+
+.hearts svg {
+  width: 24px; /* Set the width of the SVG */
+  height: 24px; /* Set the height of the SVG */
+  margin-right: 5px; /* Add some margin between hearts */
+  fill: red; /* Set the fill color of the hearts */
+}
+
+.cell {
+  /* width: 40px;
+  height: 40px; */
+  border: 1px solid #ccc;
+  background-color: white; /* Assurez-vous que les cellules ont une couleur de fond */
+}
+
+.cell.border-right-highlight {
+  border-right: 2px solid black; /* Par exemple, une bordure rouge pour mettre en évidence */
+}
+
+.cell.border-bot-highlight {
+  border-bottom: 2px solid black; /* Par exemple, une bordure rouge pour mettre en évidence */
+}
+
+.cell.border-top-highlight {
+  border-top: 2px solid black; /* Par exemple, une bordure rouge pour mettre en évidence */
+}
+
+.cell.border-left-highlight {
+  border-left: 2px solid black; /* Par exemple, une bordure rouge pour mettre en évidence */
+}
+
+.filled {
+  background-color: black; /* Couleur de fond pour les cellules vivantes */
+}
+
+.empty {
+  background-color: white; /* Couleur de fond pour les cellules mortes */
+}
+
+.cross {
+  background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='60px' height='60px' viewBox='0 0 48 48' enable-background='new 0 0 48 48' xml:space='preserve'%3E%3Cpolygon fill='%23ACACAC' points='26.104,9.521 22.479,5.897 16,12.376 9.522,5.897 5.896,9.522 12.375,16 5.898,22.478 9.522,26.103 16,19.625 22.479,26.103 26.103,22.478 19.625,16 '/%3E%3C/svg%3E%0A");
+}
+
+
+table.nonogram-puzzle-grid {
+  position: relative;
+  width: auto;
+  table-layout: fixed;
+  transition: transform 1s ease;
+  margin: 0 auto;
+}
+
+table.nonogram-puzzle-grid .hint {
+  vertical-align: bottom;
+  transition: opacity 1s ease;
+  background-color: #E8EEF2;
+  color: #444;
+  border-radius: 10px;
+  border: 1px solid white;
+  font-weight: 600;
+}
+
+table.nonogram-puzzle-grid th {
+  max-width: 100px;
+  max-height: 100px;
+  transition: max-width 0.5s ease, max-height 0.5s ease, padding 0.5s ease;
+}
+
+table.nonogram-puzzle-grid .hint.top {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+table.nonogram-puzzle-grid .hint.top .fill {
+  flex-direction: column;
+}
+table.nonogram-puzzle-grid .hint .fill {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+table.nonogram-puzzle-grid .fill {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 5px;
+}
+
+table.nonogram-puzzle-grid .hint.left .fill {
+  padding-right: 10px;
+}
+
+.nonogram-container {
+  font-family: 'Quicksand', sans-serif;
+  color: #777;
+  font-size: 16px;
+  line-height: 19px;
+  overflow-y: scroll;
+}   
+
+table.nonogram-puzzle-grid .hint.left span {
+  margin: 0 0 0 10px;
+}
+
+span {
+  font-weight:600;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: [ col ] 1fr;
+  grid-template-rows: [ row ] auto [ row ] auto [ row ];
+  grid-gap: 30px;
+  margin-top: 20px;
+}
+
+table.nonogram-puzzle-grid td.puzzle-cell.playable {
+  cursor: pointer;
+}
+
+
+table.nonogram-puzzle-grid .hint.top span {
+  margin: 0 0 5px 0;
+}
+
