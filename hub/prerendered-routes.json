@@ -1,8 +1,0 @@
-{
-  "routes": [
-    "/",
-    "/gameoflife",
-    "/nonogram",
-    "/worldmap"
-  ]
-}
