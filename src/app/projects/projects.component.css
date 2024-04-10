@@ -7,15 +7,81 @@
 }
 
 .projects {
-    
-    display: grid;
-    column-gap: 14px;
-    row-gap: 14px;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 400px));
     margin-top: 50px;
-    justify-content: space-around; 
+    margin-bottom: 20px;
+}
+.project {
+    margin: 10px 40px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.project-title {
+    margin-top: 0; /* Remove default margin */
+    margin-bottom: 10px; /* Add margin to separate from link */
+}
+.project-link {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.project-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Center text content horizontally */
+  }
+  
+  .project-image {
+    max-width: 100%; /* Ensure the image does not exceed the width of its container */
+    margin-top: 10px; /* Add some space between the image and other content */
+    height: 300px;
+  }
+
+.about-me {
+    margin: 10px 40px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.img-project {
-    height: 8rem;
+.about-me ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.about-me li {
+    margin-bottom: 10px;
+}
+
+.about-me hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+.section-title {
+    margin-bottom: 20px; /* Add margin bottom for some spacing */
+    font-size: 28px; /* Adjust font size if needed */
+    font-weight: bold; /* Make the title bold */
+    color: #333; /* Set the color of the title */
+    margin-left: 50px;
 }

@@ -1,19 +1,69 @@
 
 
-<h1 class="cat-title "> My Projects !
-</h1>
-<mat-divider></mat-divider>
-<!-- projects.component.html -->
 
-<section class="projects">
+<div class="container" style="margin-top:20px;">
+  <section>
+    <h2 class="section-title" >About Me</h2>
+    <div clas="row">
+      <div class="about-me col-11 offset-1">
+        <p>Hi, my name is Baptiste Volle. I've been working as a Software Engineer since 2019, after graduating with a master's degree from the Université de Montpellier.</p>
+        
+        <p>I have a passion for software development, particularly in creating web applications. Over the years, I've had the opportunity to work on various projects for AIRBUS, including:</p>
+        
+        <ul>
+            <li>
+                <strong>myPlanning:</strong> a tool that allows users to create, edit, and share easily readable schedules for Systems development.
+            </li>
+            <li>
+                <strong>RTI Catalogue:</strong> a tool for creating and sharing Ground Re-Test data on Aircraft.
+            </li>
+            <li>
+                <strong>NC Clustering:</strong> a web application for analyzing Aircraft Non-conformities.
+            </li>
+        </ul>
+        
+        <p>In addition to my professional work, I enjoy creating small applications for personal projects. This allows me to explore new technologies and have fun while learning.</p>
+        
+        <hr>
+        
+        <p>You can check out some of my projects in the section below!</p>
+    </div>
+  </div>
+  </section>
+
+  <section class="projects row" >
+    <h2 class="section-title">My Projects</h2>
+    <div *ngFor="let project of filteredProjectsList" class="project col-lg-5">
+      <h3 class="project-title"> {{ project.name }} </h3>
+      <a class="project-link btn-lg btn-outline-secondary btn" href="{{project.url}}" targer="blank_" >View <i class="bi bi-box-arrow-up-right"></i></a>
+      <div class="project-details">
+        <p class="project-description">{{project.description}}</p>
+        <img class="project-image" src='{{ "assets/images/" + project.id + ".png" }}' alt="{{ project.name }}">
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+<!-- <section class="projects">
   <div *ngFor="let project of filteredProjectsList">
-    <div class="card" style="width: 18rem; padding: 1rem; height:25rem;">
-      <h5 class="card-title">{{ project.name }}</h5>
-      <img src='{{ "assets/images/" + project.id + ".png" }}' class="img-project card-img-top" alt="...">
-      <div class="card-body">
+    <div class="card" style="width: 18rem; height:25rem;">
+      
+      <div class="card-header">
+        <h5>
+          {{ project.name }}
+        </h5>
+       </div>
+      
+      <div class="card-body padding:1rem;">
+        <img src='{{ "assets/images/" + project.id + ".png" }}' class="img-project card-img-top" alt="..."> 
          <p class="card-text"> {{ project.description }}</p>
-         <a href="#" [routerLink]="['/', project.url]" class="btn btn-outline-primary"> Check here</a>
+         <a href="#" [routerLink]="['/', project.url]" class="btn btn-secondary"> Check here</a>    
       </div>
     </div>
   </div>
-</section>
+</section> -->
